@@ -1,16 +1,28 @@
+def imageName = 'mlabouardy/movies-loader'
 pipeline {
-    agent none 
+    agent none
     stages {
-        stage('Build') { 
+        stage('Build') {
             agent {
                 docker {
-                    image 'python:3.10-alpine' 
+                    image 'python:3.10-alpine'
                 }
             }
             steps {
-                sh 'python -m py_compile main.py' 
-                stash(name: 'compiled-results', includes: '*.py*') 
+                sh 'python -m py_compile main.py'
+                stash(name: 'compiled-results', includes: '*.py*')
             }
+        }
+        stage('Test') { 
+            steps {
+                script {
+                 def imageTest= docker.build("${imageName}-test", "-f Dockerfile.test .")
+                    imageTest.inside{
+                        sh "python test_main.py"
+
+                 }
+            }
+
         }
     }
 }
