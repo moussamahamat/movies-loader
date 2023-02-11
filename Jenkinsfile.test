@@ -1,13 +1,16 @@
-pipeline{
-    agent{
-        label 'any'
-    }
-
-    stages{
-        stage('Checkout'){
-            steps{
-                checkout scm
+pipeline {
+    agent none 
+    stages {
+        stage('Build') { 
+            agent {
+                docker {
+                    image 'python:3.7.3' 
+                }
+            }
+            steps {
+                sh 'python -m py_compile main.py' 
+                stash(name: 'compiled-results', includes: '*.py*') 
             }
         }
-        
-      }
+    }
+}
