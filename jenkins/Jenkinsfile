@@ -6,13 +6,8 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
-    stages{
-        stage('Checkout'){
-            steps{
-                checkout scm
-            }
-        }
-   
+       stages{
+
         stage('Test') {
             agent {
                 docker {
@@ -23,6 +18,7 @@ pipeline {
                   sh 'python -m py_compile test_main.py'
            
         }
+              }
         stage('Build') {
             steps {
                 script {
