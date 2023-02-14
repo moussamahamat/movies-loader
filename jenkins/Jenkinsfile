@@ -3,30 +3,42 @@ def registry = 'https://registry.slowcoder.com'
 
 pipeline {
     agent none
-    options {
-        skipStagesAfterUnstable()
-    }
-       stages{
+    stages {
+        stage('Checkout') {
 
+            steps {
+                checkout scm
+            }
+        }
         stage('Test') {
             agent {
                 docker {
-                    image 'python:2-alpine'
+                    image 'qnib/pytest'
                 }
             }
             steps {
-                  sh 'python -m py_compile test_main.py'
-           
-        }
-              }
-        stage('Build') {
-            steps {
-                script {
-                 def image= docker.build("${imageName}")
-                 }
+                sh 'py.test --verbose --junit-xml test-reports/results.xml test_main.py'
             }
- 
+            post {
+                always {
+                    junit 'test-reports/results.xml'
+                }
+            }
         }
-
+        stage('Deliver') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
+                }
+            }
+            steps {
+                sh 'pyinstaller --onefile test_main.py'
+            }
+            post {
+                success {
+                    archiveArtifacts 'dist/test_main'
+                }
+            }
+        }
     }
 }
