@@ -18,14 +18,15 @@ pipeline {
                 }
             }
         }
+           
         stage('Build') {
             steps {
                 script {
                  def image= docker.build("${imageName}")
-                 }
+               }
             }
- 
-        }
+         }
 
-    }
-}
+           
+     }
+ }
