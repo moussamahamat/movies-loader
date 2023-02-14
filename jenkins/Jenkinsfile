@@ -6,6 +6,12 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
+    stages{
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }
+        }
     stages {
         stage('Test') {
             agent {
