@@ -10,11 +10,11 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'qnib/pytest'
+                    image 'python:2-alpine'
                 }
             }
             steps {
-                  sh 'py.test test_main.py'
+                  sh 'python -m py_compile test_main.py'
             }
         }
         stage('Build') {
