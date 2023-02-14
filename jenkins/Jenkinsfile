@@ -30,16 +30,6 @@ pipeline {
             }
  
         }
-        stage('Push'){
-            steps{
-                docker.withRegistry(registry, 'registry') {
-                        docker.image(imageName).push(commitID())
 
-                        if (env.BRANCH_NAME == 'develop') {
-                            docker.image(imageName).push('develop')
-                        }
-                }
-            }
-        }
     }
 }
