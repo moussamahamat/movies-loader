@@ -32,18 +32,18 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
-	                 imageName.push()
+	                 docker.image(imageName).push(commitID())
 
                         if (env.BRANCH_NAME == 'develop') {
-                            imageName.push('develop')
+                           docker.image(imageName).push('develop')
                         }
 
                         if (env.BRANCH_NAME == 'preprod') {
-                            imageName.push('preprod')
+                            docker.image(imageName).push('preprod')
                         }
 
                         if (env.BRANCH_NAME == 'master') {
-                            imageName.push('latest')
+                            docker.image(imageName).push('latest')
                         }
 
               }
@@ -98,4 +98,11 @@ def approve() {
 	timeout(time:1, unit:'DAYS') {
 		input('Do you want to deploy to live?')
 	}
+}
+
+def commitID() {
+    sh 'git rev-parse HEAD > .git/commitID'
+    def commitID = readFile('.git/commitID').trim()
+    sh 'rm .git/commitID'
+    commitID
 }
