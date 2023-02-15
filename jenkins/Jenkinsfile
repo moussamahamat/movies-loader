@@ -33,7 +33,7 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry(registryCredential, '') { 
-                    docker.image(imageName).push(commitID())
+                    docker.image(imageName).push()
               }
             } 
           }
