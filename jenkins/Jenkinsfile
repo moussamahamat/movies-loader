@@ -1,6 +1,6 @@
 def imageName = '3036/movies-loader'
 def registry = 'https://hub.docker.com/repository/docker/3036/pyhtonapp/general'
-def registryCredential = 'docker-hub' 
+def registryCredential = 'dockerhub' 
 
 pipeline {
     agent none
@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                   docker.build("${imageName}")
+                   imageName = docker.build("${imageName}")
                }
             }
          }
@@ -32,7 +32,7 @@ pipeline {
         stage('Deploy our image') { 
             steps { 
                 script { 
-                    docker.withRegistry(registryCredential, '') { 
+                    docker.withRegistry('', registryCredential) { 
                     imageName.push()
               }
             } 
