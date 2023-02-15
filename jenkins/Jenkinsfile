@@ -1,5 +1,6 @@
-def imageName = 'mlabouardy/movies-loader'
-def registry = 'https://registry.slowcoder.com'
+def imageName = '3036/movies-loader'
+def registry = 'https://hub.docker.com/repository/docker/3036/pyhtonapp/general'
+def registryCredential = 'docker-hub' 
 
 pipeline {
     agent none
@@ -26,6 +27,17 @@ pipeline {
                }
             }
          }
+          
+        
+        stage('Deploy our image') { 
+            steps { 
+                script { 
+                    docker.withRegistry( 'registry', 'registryCredential' ) { 
+                      image.push() 
+              }
+            } 
+          }
+        } 
 
            
      }
