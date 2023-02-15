@@ -32,18 +32,18 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
-	                 docker.image(imageName).push(commitID())
+	                 imageName.push(commitID())
 
                         if (env.BRANCH_NAME == 'develop') {
-                           docker.image(imageName).push('develop')
+                           imageName.push('develop')
                         }
 
                         if (env.BRANCH_NAME == 'preprod') {
-                            docker.image(imageName).push('preprod')
+                            imageName.push('preprod')
                         }
 
                         if (env.BRANCH_NAME == 'master') {
-                            docker.image(imageName).push('latest')
+                            imageName.push('latest')
                         }
 
               }
