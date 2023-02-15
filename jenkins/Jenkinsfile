@@ -33,7 +33,10 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
-                    imageName.push()
+                        
+                        if (env.BRANCH_NAME == 'develop') {
+                            docker.image(imageName).push('develop')
+                        }
               }
             } 
           }
