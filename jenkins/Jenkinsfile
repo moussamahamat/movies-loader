@@ -32,19 +32,7 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
-			    
-			
-                        if (env.BRANCH_NAME == 'develop') {
-                              imageName.push('develop')
-                        }
-
-                        if (env.BRANCH_NAME == 'preprod') {
-                              imageName.push('preprod')
-                        }
-
-                        if (env.BRANCH_NAME == 'master') {
-                              imageName.push('latest')
-                        }    
+		    imageName.push()     
 
               }
             } 
