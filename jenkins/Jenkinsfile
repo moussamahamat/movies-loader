@@ -3,7 +3,7 @@ def registry = 'https://hub.docker.com/repository/docker/3036/pyhtonapp/general'
 def registryCredential = 'dockerhub' 
 
 pipeline {
-    agent none
+    agent any
     options {
         skipStagesAfterUnstable()
     }
