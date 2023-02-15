@@ -75,6 +75,6 @@ def deploy(environment) {
 		System.exit(0)
 	}
 
-	sh "docker run -d -p ${port}:5000 3036/movies-loader:${BUILD_NUMBER}"
+	sh "docker run -d -p ${port}:5000 --name ${containerName} 3036/movies-loader"
 
 }
