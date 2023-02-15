@@ -53,8 +53,14 @@ pipeline {
           
         stage("Deploy - Dev") {
             steps { deploy('dev') }
-		}   
-           
+	}   
+	      
+       stage("Approve") {
+          steps { approve() }
+       }
+     
+	      
+	      
      }
  }
 
@@ -85,4 +91,11 @@ def deploy(environment) {
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
 	sh "docker run -d -p ${port}:5000 --name ${containerName} 3036/movies-loader"
 
+}
+
+def approve() {
+
+	timeout(time:1, unit:'DAYS') {
+		input('Do you want to deploy to live?')
+	}
 }
