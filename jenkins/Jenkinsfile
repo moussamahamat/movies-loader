@@ -43,7 +43,7 @@ pipeline {
         stage('Run Docker container on remote hosts') {
              
             steps {
-                sh "docker -H ssh://moussa@192.168.1.96 run -d -p 8888:5000  ${imageName}"
+                sh "docker -H ssh://moussa@192.168.1.96 run -d -p 8888:5000 3036/movies-loader"
  
             }
         }
