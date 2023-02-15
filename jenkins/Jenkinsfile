@@ -40,12 +40,10 @@ pipeline {
           }
         } 
           
-     stage('Run Docker container on Jenkins Agent') {
-         steps {
-                sh "docker run -d -p 4030:80 3036/movies-loader"
- 
-            }
-        }
+     
+      stage("Deploy - Dev") {
+            steps { deploy('dev') }
+		}
 
 
           
@@ -53,3 +51,32 @@ pipeline {
            
      }
  }
+
+
+def deploy(environment) {
+
+	def containerName = ''
+	def port = ''
+
+	if ("${environment}" == 'dev') {
+		containerName = "app_dev"
+		port = "8888"
+	} 
+	else if ("${environment}" == 'stage') {
+		containerName = "app_stage"
+		port = "88"
+	}
+	else if ("${environment}" == 'live') {
+		containerName = "app_live"
+		port = "80"
+	}
+	else {
+		println "Environment not valid"
+		System.exit(0)
+	}
+
+	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
+	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
+	sh "docker run -d -p ${port}:5000 --name ${containerName}:${BUILD_NUMBER}"
+
+}
