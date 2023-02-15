@@ -33,6 +33,7 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
+                        docker.image(imageName).push(commitID())
                         
                         if (env.BRANCH_NAME == 'develop') {
                             docker.image(imageName).push('develop')
@@ -45,3 +46,10 @@ pipeline {
            
      }
  }
+
+def commitID() {
+    sh 'git rev-parse HEAD > .git/commitID'
+    def commitID = readFile('.git/commitID').trim()
+    sh 'rm .git/commitID'
+    commitID
+}
