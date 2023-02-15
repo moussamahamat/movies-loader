@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                 def image= docker.build("${imageName}")
+                   docker.build("${imageName}")
                }
             }
          }
@@ -33,7 +33,7 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry(registryCredential, '') { 
-                    docker.image(imageName).push()
+                    imageName.push()
               }
             } 
           }
