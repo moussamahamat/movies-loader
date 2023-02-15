@@ -75,8 +75,6 @@ def deploy(environment) {
 		System.exit(0)
 	}
 
-	sh "docker ps -f name=${imageName} -q | xargs --no-run-if-empty docker stop"
-	sh "docker ps -a -f name=${imageName} -q | xargs -r docker rm"
-	sh "docker run -d -p ${port}:5000 --name ${imageName}:${BUILD_NUMBER}"
+	sh "docker run -d -p ${port}:5000 ${imageName}:${BUILD_NUMBER}"
 
 }
