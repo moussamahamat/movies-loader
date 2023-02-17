@@ -63,14 +63,7 @@ pipeline {
                 build job: "watchlist-deployment/master"
             }
         }
-    } catch(e){
-        currentBuild.result = 'FAILED'
-        throw e
-    } finally {
-        notifySlack(currentBuild.result)
-    }
-}
-}
+    } 
           
         stage("Deploy - Dev") {
             steps { deploy('dev') }
