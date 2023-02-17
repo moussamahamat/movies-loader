@@ -28,7 +28,8 @@ pipeline {
             }
          }
         
-        stage('Deploy our image') { 
+        stage('Deploy our image') {
+           parallel(
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
@@ -49,6 +50,7 @@ pipeline {
               }
             } 
           }
+         )
         } 
           
         stage("Deploy - Dev") {
