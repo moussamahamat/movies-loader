@@ -41,8 +41,7 @@ pipeline {
                     } else {
                         error "Invalid branch name: ${env.BRANCH_NAME}"
                     }
-                    docker.build("3036/movies-loader).push("3036/movies-loader)
- 
+                      imageName.push()
 
               }
             } 
