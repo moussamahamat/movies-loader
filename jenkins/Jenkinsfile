@@ -28,26 +28,37 @@ pipeline {
             }
          }
         
-        stage('Push image') {
+        stage('Deploy our image') {
             steps { 
                 script { 
-		    def dockerTag = ''
                     docker.withRegistry('', registryCredential) { 
-                    if (env.BRANCH_NAME == 'develop') {
-                        dockerTag = 'develop'
-                    } else if (env.BRANCH_NAME == 'preprod') {
-                        dockerTag = 'preprod'
-                    } else if (env.BRANCH_NAME == 'master') {
-                        dockerTag = 'stable'
-                    } else {
-                        error "Invalid branch name: ${env.BRANCH_NAME}"
-                    }
-                      imageName.push("${dockerTag}")
+	                 imageName.push(commitID())
+
+                        if (env.BRANCH_NAME == 'develop') {
+                           imageName.push('develop')
+                        }
+
+                        if (env.BRANCH_NAME == 'preprod') {
+                            imageName.push('preprod')
+                        }
+
+                        if (env.BRANCH_NAME == 'master') {
+                            imageName.push('latest')
+                        }
 
               }
             } 
           }
-        }           
+        }      
+          
+        stage("Deploy - Dev") {
+            steps { deploy('dev') }
+	}   
+	      
+       stage("Approve") {
+          steps { approve() }
+       }
+     
 	      
 	      
      }
@@ -80,4 +91,18 @@ def deploy(environment) {
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
 	sh "docker run -d -p ${port}:5000 --name ${containerName} 3036/movies-loader"
 
+}
+
+def approve() {
+
+	timeout(time:1, unit:'DAYS') {
+		input('Do you want to deploy to live?')
+	}
+}
+
+def commitID() {
+    sh 'git rev-parse HEAD > .git/commitID'
+    def commitID = readFile('.git/commitID').trim()
+    sh 'rm .git/commitID'
+    commitID
 }
