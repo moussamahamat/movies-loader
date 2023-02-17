@@ -28,7 +28,7 @@ pipeline {
             }
          }
         
-        stage('Deploy our image') {
+        stage('Push image') {
             steps { 
                 script { 
 		    def dockerTag = ''
