@@ -42,7 +42,7 @@ pipeline {
                     } else {
                         error "Invalid branch name: ${env.BRANCH_NAME}"
                     }
-                    docker.build("my-docker-image:${dockerTag}").push("my-docker-image:${dockerTag}")
+                    docker.build("3036/movies-loader:${dockerTag}").push("3036/movies-loader:${dockerTag}")
  
 
               }
@@ -99,9 +99,4 @@ def approve() {
 	}
 }
 
-def commitID() {
-    sh 'git rev-parse HEAD > .git/commitID'
-    def commitID = readFile('.git/commitID').trim()
-    sh 'rm .git/commitID'
-    commitID
-}
+
