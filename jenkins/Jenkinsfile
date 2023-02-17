@@ -41,7 +41,7 @@ pipeline {
                     } else {
                         error "Invalid branch name: ${env.BRANCH_NAME}"
                     }
-                      imageName.push()
+                      imageName.push("${imageName}:${dockerTag}")
 
               }
             } 
