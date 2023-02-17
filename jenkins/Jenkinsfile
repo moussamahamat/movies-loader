@@ -32,7 +32,6 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry('', registryCredential) { 
-                    def dockerTag = ''
                     if (env.BRANCH_NAME == 'develop') {
                         dockerTag = 'latest'
                     } else if (env.BRANCH_NAME == 'preprod') {
@@ -42,7 +41,7 @@ pipeline {
                     } else {
                         error "Invalid branch name: ${env.BRANCH_NAME}"
                     }
-                    docker.build("3036/movies-loader:${dockerTag}").push("3036/movies-loader:${dockerTag}")
+                    docker.build("3036/movies-loader).push("3036/movies-loader)
  
 
               }
@@ -98,5 +97,6 @@ def approve() {
 		input('Do you want to deploy to live?')
 	}
 }
+
 
 
