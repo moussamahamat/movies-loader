@@ -61,6 +61,7 @@ pipeline {
                 build job: "3036/movies-loader/master"
             }
         }
+	 }
      
 	      
 	      
