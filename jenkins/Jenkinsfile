@@ -31,6 +31,7 @@ pipeline {
         stage('Deploy our image') {
             steps { 
                 script { 
+		    def dockerTag = ''
                     docker.withRegistry('', registryCredential) { 
                     if (env.BRANCH_NAME == 'develop') {
                         dockerTag = 'latest'
