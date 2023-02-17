@@ -49,13 +49,18 @@ pipeline {
           }
         }      
           
-        stage("Deploy - Dev") {
-            steps { deploy('dev') }
-	}   
-	      
-       stage("Approve") {
-          steps { approve() }
-       }
+            stage('Deploy'){
+               if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'preprod'){
+                   build job: "3036/movies-loader/${env.BRANCH_NAME}"
+            }
+
+            if(env.BRANCH_NAME == 'master'){
+                timeout(time: 2, unit: "HOURS") {
+                    input message: "Approve Deploy?", ok: "Yes"
+                }
+                build job: "3036/movies-loader/master"
+            }
+        }
      
 	      
 	      
