@@ -34,7 +34,7 @@ pipeline {
 		    def dockerTag = ''
                     docker.withRegistry('', registryCredential) { 
                     if (env.BRANCH_NAME == 'develop') {
-                        dockerTag = 'latest'
+                        dockerTag = 'develop'
                     } else if (env.BRANCH_NAME == 'preprod') {
                         dockerTag = 'preprod'
                     } else if (env.BRANCH_NAME == 'master') {
