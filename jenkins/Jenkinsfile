@@ -70,6 +70,7 @@ pipeline {
         notifySlack(currentBuild.result)
     }
 }
+}
           
         stage("Deploy - Dev") {
             steps { deploy('dev') }
